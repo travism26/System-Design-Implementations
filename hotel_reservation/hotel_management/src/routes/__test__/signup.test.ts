@@ -1,7 +1,5 @@
 import request from 'supertest';
 import { app } from '../../app';
-import { kafkaWrapper } from '../../kafka-wrapper';
-import e from 'express';
 
 describe('Signup Route', () => {
   it('should be defined', async () => {

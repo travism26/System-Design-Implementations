@@ -8,6 +8,9 @@ const start = async () => {
     throw new Error('JWT_KEY must be defined');
   }
 
+  // TODO: Add a config file to handle the environment variables
+  // TODO: I might want to use postgres instead of mongo for the database
+  // TODO: Going to try and use the hexagon architecture to separate the concerns
   if (!process.env.MONGO_URI) {
     throw new Error('MONGO_URI must be defined');
   }

@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ['hotel_staff', 'hotel_manager'],
+      default: 'hotel_staff',
+    },
   },
   {
     toJSON: {
@@ -69,6 +74,11 @@ userSchema.pre('save', async function (done) {
 // in what the correct values are. How we get TS involved!
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
+};
+
+userSchema.statics.promoteToManager = async (userId: string) => {
+  const user = await User.findByIdAndUpdate(userId, { role: 'hotel_manager' });
+  return user;
 };
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { requireAuth } from '../middleware/require-auth';
-import { Hotel } from '../models/hotel';
+import { Hotel } from '../domain/models/hotel';
 const router = Router();
 
 // GET /v1/hotels/ID

@@ -51,3 +51,7 @@ This service uses role-based access control (RBAC) for authorization. The follow
 - **Hotel Manager**: Can perform all actions that a hotel staff can perform, plus additional actions such as managing hotel information, room availability, and guest information.
 
 ## Environment Variables
+
+# Design patterns used
+
+- **Hexagonal Architecture**: This is used to separate the business logic from the external interfaces. This allows us to easily switch between different persistence mechanisms or external interfaces in the future.

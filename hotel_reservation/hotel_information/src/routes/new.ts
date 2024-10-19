@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Hotel } from '../domain/models/hotel';
+import { Hotel } from '../domain/models/Hotel';
 import { requireAuth } from '../middleware/require-auth';
 import { BadRequestError } from '../errors/bad-request-error';
 

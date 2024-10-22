@@ -6,12 +6,18 @@ import { MongooseHotelRepository } from '../adapters/out/persistence/MongooseHot
 
 const router = Router();
 
-const hotelRepository = new MongooseHotelRepository();
-// const postgreSqlHotelRepository = new PostgreSqlHotelRepository();
+const hotelMongoRepository = new MongooseHotelRepository();
 
-const hotelUseCase = new HotelUseCase(hotelRepository);
+const hotelUseCase = new HotelUseCase(hotelMongoRepository);
 
 const hotelController = new HotelController(hotelUseCase);
+
+// POST /v1/hotels
+router.post(
+  '/v1/hotels',
+  requireAuth(['hotel_staff', 'hotel_manager']),
+  hotelController.createHotel.bind(hotelController)
+);
 
 // GET /v1/hotels/:id
 router.get(
@@ -27,4 +33,5 @@ router.get(
   hotelController.getAllHotels.bind(hotelController)
 );
 
-export default router;
+export { router as hotelRoutes };
+// useage: import { hotelRoutes } from './hotelRoutes';

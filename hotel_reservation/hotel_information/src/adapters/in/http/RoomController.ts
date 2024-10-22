@@ -5,6 +5,11 @@ import { RoomUseCase } from '../../../application/use-cases/RoomUseCase';
 export class RoomController {
   constructor(private readonly roomUseCase: RoomUseCase) {}
 
+  async getAllRooms(req: Request, res: Response) {
+    const rooms = await this.roomUseCase.retrieveAllRooms();
+    res.json(rooms);
+  }
+
   async getRoomById(req: Request, res: Response) {
     const room = await this.roomUseCase.retrieveRoomDetails(req.params.room_id);
     res.json(room);

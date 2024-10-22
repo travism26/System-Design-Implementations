@@ -1,19 +1,19 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import { Room } from '../../../domain/models/Room';
 
-// Use the Room domain model to define the attributes
-interface RoomAttrs extends Omit<Room, 'hotelId'> {
+interface RoomDocument extends Document {
+  roomId: string;
+  roomTypeId: string;
+  floor: number;
+  number: string;
   hotelId: mongoose.Types.ObjectId;
+  name: string;
+  isAvailable: boolean;
 }
 
-// Omit the hotel_id from the Room domain model and add it to the Document
-interface RoomDoc extends Omit<Room, 'id' | 'hotelId'>, Document {
-  id: mongoose.Types.ObjectId;
-  hotelId: mongoose.Types.ObjectId;
-}
-
-interface RoomModel extends mongoose.Model<RoomDoc> {
-  build(attrs: RoomAttrs): RoomDoc;
+interface RoomModel extends mongoose.Model<RoomDocument> {
+  fromDomain(room: Room): RoomDocument;
+  toDomain(document: RoomDocument): Room;
 }
 
 const RoomSchema = new Schema(
@@ -39,27 +39,38 @@ const RoomSchema = new Schema(
   }
 );
 
-// Update the build function to use RoomModelAttrs
-RoomSchema.statics.build = (attrs: RoomAttrs): RoomDoc => {
-  return new RoomModel(attrs);
+RoomSchema.statics.fromDomain = function (room: Room): RoomDocument {
+  const { id, hotelId, ...roomData } = room;
+  return new this({
+    _id: id ? new mongoose.Types.ObjectId(id) : new mongoose.Types.ObjectId(),
+    hotelId: new mongoose.Types.ObjectId(hotelId),
+    ...roomData,
+  });
 };
 
-// Update the toDomainModel method
-RoomSchema.methods.toDomainModel = function (): Room {
+RoomSchema.statics.toDomain = function (document: RoomDocument): Room {
   return {
-    id: this._id.toString(),
-    roomTypeId: this.roomTypeId,
-    floor: this.floor,
-    number: this.number,
-    hotelId: this.hotelId.toString(),
-    name: this.name,
-    isAvailable: this.isAvailable,
+    id: document._id.toString(),
+    roomTypeId: document.roomTypeId,
+    floor: document.floor,
+    number: document.number,
+    hotelId: document.hotelId.toString(),
+    name: document.name,
+    isAvailable: document.isAvailable,
   };
 };
 
-export const RoomModel = mongoose.model<RoomDoc, RoomModel>('Room', RoomSchema);
+const RoomModel = mongoose.model<RoomDocument, RoomModel>('Room', RoomSchema);
 
-// Update the createRoomModel function
-export const createRoomModel = (room: RoomAttrs): RoomDoc => {
-  return RoomModel.build(room);
+export const createRoom = async (room: Room): Promise<Room> => {
+  const roomDocument = RoomModel.fromDomain(room);
+  await roomDocument.save();
+  return RoomModel.toDomain(roomDocument);
 };
+
+export const getRoom = async (id: string): Promise<Room | null> => {
+  const roomDoc = await RoomModel.findById(id);
+  return roomDoc ? RoomModel.toDomain(roomDoc) : null;
+};
+
+export { RoomModel };

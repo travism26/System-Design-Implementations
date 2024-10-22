@@ -4,6 +4,10 @@ import { Room } from '../../domain/models/Room';
 export class RoomUseCase {
   constructor(private readonly roomRepository: RoomRepository) {}
 
+  async retrieveAllRooms() {
+    return this.roomRepository.findAllRooms();
+  }
+
   async retrieveRoomDetails(roomId: string) {
     return this.roomRepository.findRoomById(roomId);
   }

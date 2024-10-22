@@ -16,7 +16,7 @@ export class HotelController {
 
   async getHotel(req: Request, res: Response) {
     try {
-      const hotelId = req.params.id;
+      const hotelId = req.params.hotel_id;
       const hotel = await this.hotelUseCase.retrieveHotelDetails(hotelId);
       res.json(hotel);
     } catch (error) {

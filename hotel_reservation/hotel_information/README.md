@@ -2,6 +2,12 @@
 
 This service is responsible for managing hotel information, including hotels, rooms, and reservations. This is more of an internal service that will be used by internal users. This will allow us to manage the hotel information in a centralized manner.
 
+# Design patterns used
+
+First impressions currently I am not a big fan of the hexagonal architecture. It seems like it is more complex than it needs to be for this service. Tons of boilerplate code for something that should be simple, but I do see the benefits and this is a good learning experience.
+
+- **Hexagonal Architecture**: This is used to separate the business logic from the external interfaces. This allows us to easily switch between different persistence mechanisms or external interfaces in the future.
+
 ## Information
 
 This service provides the following features and endpoints for authorized hotel staff:
@@ -52,6 +58,5 @@ This service uses role-based access control (RBAC) for authorization. The follow
 
 ## Environment Variables
 
-# Design patterns used
-
-- **Hexagonal Architecture**: This is used to separate the business logic from the external interfaces. This allows us to easily switch between different persistence mechanisms or external interfaces in the future.
+- **JWT_KEY**: The key used to sign the JWT.
+- **MONGO_URI**: The URI of the MongoDB database.

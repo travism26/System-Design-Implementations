@@ -1,41 +1,22 @@
-import { Router, Request, Response } from 'express';
-import { Hotel } from '../domain/models/Hotel';
+import { Router } from 'express';
 import { requireAuth } from '../middleware/require-auth';
-import { BadRequestError } from '../errors/bad-request-error';
+import { HotelController } from '../adapters/in/http/HotelController';
+import { HotelUseCase } from '../application/use-cases/HotelUseCase';
+import { MongooseHotelRepository } from '../adapters/out/persistence/MongooseHotelRepository';
 
 const router = Router();
 
+const hotelRepository = new MongooseHotelRepository();
+
+const hotelUseCase = new HotelUseCase(hotelRepository);
+
+const hotelController = new HotelController(hotelUseCase);
+
+// POST /v1/hotels
 router.post(
   '/v1/hotels',
   requireAuth(['hotel_staff', 'hotel_manager']),
-  async (req: Request, res: Response) => {
-    try {
-      const { name, address, rooms, amenities } = req.body;
-
-      if (!name || !address || !rooms || !amenities) {
-        throw new BadRequestError('Missing required fields');
-      }
-
-      const newHotel = new Hotel({
-        name,
-        address,
-        rooms,
-        amenities,
-      });
-
-      await newHotel.save();
-
-      res
-        .status(201)
-        .json({ message: 'Hotel created successfully', hotel: newHotel });
-    } catch (error) {
-      console.error('Error creating hotel:', error);
-      if (error instanceof BadRequestError) {
-        return res.status(400).json({ message: error.message });
-      }
-      res.status(500).json({ message: 'Error creating hotel' });
-    }
-  }
+  hotelController.createHotel.bind(hotelController)
 );
 
 export default router;

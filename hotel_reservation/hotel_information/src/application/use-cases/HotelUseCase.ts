@@ -1,34 +1,26 @@
 import { HotelRepository } from '../../ports/out/HotelRepository';
 import { Hotel } from '../../domain/models/Hotel';
 
-export class RetrieveHotelDetails {
+export class HotelUseCase {
   constructor(private readonly hotelRepository: HotelRepository) {}
 
-  async execute(hotelId: string) {
+  async retrieveAllHotels() {
+    return this.hotelRepository.findAllHotels();
+  }
+
+  async retrieveHotelDetails(hotelId: string) {
     return this.hotelRepository.findHotelById(hotelId);
   }
-}
 
-export class RegisterNewHotel {
-  constructor(private readonly hotelRepository: HotelRepository) {}
-
-  async execute(hotel: Hotel) {
+  async registerNewHotel(hotel: Hotel) {
     return this.hotelRepository.saveHotel(hotel);
   }
-}
 
-export class ModifyHotelInformation {
-  constructor(private readonly hotelRepository: HotelRepository) {}
-
-  async execute(hotel: Hotel) {
+  async modifyHotelInformation(hotel: Hotel) {
     return this.hotelRepository.updateHotel(hotel);
   }
-}
 
-export class RemoveHotelFromSystem {
-  constructor(private readonly hotelRepository: HotelRepository) {}
-
-  async execute(hotelId: string) {
+  async removeHotelFromSystem(hotelId: string) {
     return this.hotelRepository.deleteHotel(hotelId);
   }
 }

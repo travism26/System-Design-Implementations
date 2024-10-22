@@ -1,44 +1,30 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import { requireAuth } from '../middleware/require-auth';
-import { Hotel } from '../domain/models/Hotel';
+import { HotelController } from '../adapters/in/http/HotelController';
+import { HotelUseCase } from '../application/use-cases/HotelUseCase';
+import { MongooseHotelRepository } from '../adapters/out/persistence/MongooseHotelRepository';
+
 const router = Router();
 
-// GET /v1/hotels/ID
+const hotelRepository = new MongooseHotelRepository();
+// const postgreSqlHotelRepository = new PostgreSqlHotelRepository();
+
+const hotelUseCase = new HotelUseCase(hotelRepository);
+
+const hotelController = new HotelController(hotelUseCase);
+
+// GET /v1/hotels/:id
 router.get(
   '/v1/hotels/:id',
   requireAuth([]),
-  async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-
-      const hotel = await Hotel.findById(id);
-
-      if (!hotel) {
-        return res.status(404).json({ message: 'Hotel not found' });
-      }
-
-      res.status(200).json(hotel);
-    } catch (error) {
-      console.error('Error fetching hotel:', error);
-      res.status(500).json({ message: 'Error fetching hotel' });
-    }
-  }
+  hotelController.getHotel.bind(hotelController)
 );
 
 // GET /v1/hotels
 router.get(
   '/v1/hotels',
   requireAuth([]),
-  async (req: Request, res: Response) => {
-    try {
-      const hotels = await Hotel.find();
-
-      res.status(200).json(hotels);
-    } catch (error) {
-      console.error('Error fetching hotels:', error);
-      res.status(500).json({ message: 'Error fetching hotels' });
-    }
-  }
+  hotelController.getAllHotels.bind(hotelController)
 );
 
 export default router;

@@ -33,5 +33,12 @@ router.get(
   hotelController.getAllHotels.bind(hotelController)
 );
 
+// DELETE /v1/hotels/:id
+router.delete(
+  '/v1/hotels/:id',
+  requireAuth(['hotel_manager']),
+  hotelController.deleteHotel.bind(hotelController)
+);
+
 export { router as hotelRoutes };
 // useage: import { hotelRoutes } from './hotelRoutes';

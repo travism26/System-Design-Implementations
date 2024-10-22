@@ -6,9 +6,9 @@ import { MongooseHotelRepository } from '../adapters/out/persistence/MongooseHot
 
 const router = Router();
 
-const hotelRepository = new MongooseHotelRepository();
+const hotelMongoRepository = new MongooseHotelRepository();
 
-const hotelUseCase = new HotelUseCase(hotelRepository);
+const hotelUseCase = new HotelUseCase(hotelMongoRepository);
 
 const hotelController = new HotelController(hotelUseCase);
 

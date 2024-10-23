@@ -13,14 +13,14 @@ const roomController = new RoomController(roomUseCase);
 // GET /v1/rooms/:id
 router.get(
   '/v1/rooms/:id',
-  requireAuth([]),
+  // requireAuth([]),
   roomController.getRoomById.bind(roomController)
   // alt: (req, res, next) => roomController.getRoomById(req, res, next)
 );
 
 router.get(
   '/v1/rooms',
-  requireAuth([]),
+  // requireAuth([]),
   roomController.getAllRooms.bind(roomController)
 );
 

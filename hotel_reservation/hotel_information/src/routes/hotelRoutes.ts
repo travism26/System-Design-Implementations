@@ -20,14 +20,14 @@ router.post(
 // GET /v1/hotels/:id
 router.get(
   '/v1/hotels/:id',
-  requireAuth([]),
+  // requireAuth([]),
   hotelController.getHotel.bind(hotelController)
 );
 
 // GET /v1/hotels
 router.get(
   '/v1/hotels',
-  requireAuth([]),
+  // requireAuth([]),
   hotelController.getAllHotels.bind(hotelController)
 );
 

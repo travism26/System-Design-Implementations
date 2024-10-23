@@ -6,6 +6,7 @@ const start = async () => {
   const JWT_KEY = process.env.JWT_KEY || 'CHANGEMEASAP';
   // MONGO_URI is the URI of the MongoDB database
   // for local development, we use the node port service
+  // I created a nodeport service in the same yaml file: infra/hotel-info-mongo-depl.yaml (local dev only)
   const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:30002';
   if (!JWT_KEY) {
     throw new Error('JWT_KEY must be defined');

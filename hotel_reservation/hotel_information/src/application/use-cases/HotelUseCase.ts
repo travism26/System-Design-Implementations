@@ -12,7 +12,7 @@ export class HotelUseCase {
     return this.hotelRepository.findHotelById(hotelId);
   }
 
-  async registerNewHotel(hotel: Hotel) {
+  async registerNewHotel(hotel: Hotel): Promise<Hotel> {
     return this.hotelRepository.saveHotel(hotel);
   }
 

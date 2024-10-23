@@ -2,12 +2,15 @@ import { app } from './app';
 import mongoose from 'mongoose';
 
 const start = async () => {
+  // JWT_KEY is used to sign the JWT tokens (used for authentication)
   const JWT_KEY = process.env.JWT_KEY || 'CHANGEMEASAP';
-  const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:30010';
+  // MONGO_URI is the URI of the MongoDB database
+  // for local development, we use the node port service
+  const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:30002';
   if (!JWT_KEY) {
     throw new Error('JWT_KEY must be defined');
   }
-  if (!process.env.MONGO_URI) {
+  if (!MONGO_URI) {
     throw new Error('MONGO_URI must be defined');
   }
 
@@ -17,7 +20,7 @@ const start = async () => {
 
   // Connect to MongoDB
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(MONGO_URI);
     console.log('Connected to MongoDB');
   } catch (err) {
     console.error(err);

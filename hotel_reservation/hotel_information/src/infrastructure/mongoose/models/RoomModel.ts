@@ -2,7 +2,6 @@ import mongoose, { Document, Schema } from 'mongoose';
 import { Room } from '../../../domain/models/Room';
 
 interface RoomDocument extends Document {
-  roomId: string;
   roomTypeId: string;
   floor: number;
   number: string;
@@ -18,7 +17,6 @@ interface RoomModel extends mongoose.Model<RoomDocument> {
 
 const RoomSchema = new Schema(
   {
-    roomId: { type: String, required: true, unique: true },
     roomTypeId: { type: String, required: true },
     floor: { type: Number, required: true },
     number: { type: String, required: true },

@@ -13,7 +13,7 @@ const hotelController = new HotelController(hotelUseCase);
 // POST /v1/hotels
 router.post(
   '/v1/hotels',
-  requireAuth(['hotel_staff', 'hotel_manager']),
+  // requireAuth(['hotel_staff', 'hotel_manager']),
   hotelController.createHotel.bind(hotelController)
 );
 

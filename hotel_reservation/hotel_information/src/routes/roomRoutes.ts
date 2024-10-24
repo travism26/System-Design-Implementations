@@ -27,7 +27,7 @@ router.get(
 // POST /v1/rooms
 router.post(
   '/v1/rooms',
-  requireAuth(['hotel_staff', 'hotel_manager']),
+  // requireAuth(['hotel_staff', 'hotel_manager']),
   roomController.createRoom.bind(roomController)
 );
 
